@@ -36,17 +36,17 @@ const PaginaBienestar = ({ registrosAnimo, agregarRegistroAnimo, eliminarRegistr
         </div>
       </header>
 
-      <div className="grid-bienestar">
-        <aside className="columna-lateral">
+      <div className="layout-bienestar-centrado">
+        <section className="bienestar-principal-ancho">
           <RegistroAnimo onAgregarRegistro={agregarRegistroAnimo} />
-          <EjerciciosRelajacion />
-        </aside>
-
-        <section className="columna-principal">
           <HistorialEmocional 
             registros={registrosAnimo} 
             onEliminar={eliminarRegistroAnimo} 
           />
+        </section>
+
+        <section className="bienestar-recursos-inferior">
+          <EjerciciosRelajacion />
           <ContenidoSaludMental />
         </section>
       </div>

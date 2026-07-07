@@ -1,26 +1,19 @@
 import { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 
-const Navbar = () => {
+const Navbar = ({ timerModo, timerTiempo, timerActivo, toggleTimer }) => {
   // LÓGICA DE ESTADOS
-  // Controla la visibilidad del menú flotante de configuración
   const [menuAbierto, setMenuAbierto] = useState(false);
 
-  // Inicializamos el tema desde localStorage para que persista. 
-  // Si no hay nada guardado, usamos 'light' por defecto.
   const [tema, setTema] = useState(() => {
     return localStorage.getItem('studybalance_tema') || 'light';
   });
 
-  // Inicializamos el idioma desde localStorage. 
-  // Si no hay nada guardado, usamos 'es' por defecto.
   const [idioma, setIdioma] = useState(() => {
     return localStorage.getItem('studybalance_idioma') || 'es';
   });
 
-  // LÓGICA DE EFECTOS (Persistencia)
-  // Cada vez que cambia el estado "tema", lo guardamos en localStorage 
-  // y aplicamos/removemos la clase '.dark-mode' al elemento raíz del HTML.
+  // LÓGICA DE EFECTOS
   useEffect(() => {
     localStorage.setItem('studybalance_tema', tema);
     if (tema === 'dark') {
@@ -30,16 +23,17 @@ const Navbar = () => {
     }
   }, [tema]);
 
-  // Cada vez que cambia el estado "idioma", lo guardamos en localStorage.
-  // (La lógica real de traducción se puede conectar a este estado luego).
   useEffect(() => {
     localStorage.setItem('studybalance_idioma', idioma);
   }, [idioma]);
 
-  // Función sencilla para abrir/cerrar el menú
   const toggleMenu = () => {
     setMenuAbierto(prev => !prev);
   };
+
+  // Formatear el tiempo del temporizador global
+  const minutos = Math.floor(timerTiempo / 60).toString().padStart(2, '0');
+  const segundos = (timerTiempo % 60).toString().padStart(2, '0');
 
   return (
     <nav className="navbar">
@@ -58,6 +52,18 @@ const Navbar = () => {
           </NavLink>
         </li>
 
+        {/* --- MINI TEMPORIZADOR --- */}
+        <li className={`mini-temporizador ${timerModo === 'trabajo' ? 'modo-trabajo' : 'modo-descanso'}`}>
+          <span className="mini-tiempo">{minutos}:{segundos}</span>
+          <button 
+            className="btn-mini-play" 
+            onClick={toggleTimer}
+            title={timerActivo ? 'Pausar' : 'Iniciar'}
+          >
+            {timerActivo ? '⏸️' : '▶️'}
+          </button>
+        </li>
+
         {/* --- MENÚ DE CONFIGURACIÓN --- */}
         <li className="configuracion-container">
           <button 
@@ -69,7 +75,6 @@ const Navbar = () => {
             ⚙️
           </button>
           
-          {/* El menú flotante solo se renderiza si menuAbierto es true */}
           {menuAbierto && (
             <div className="menu-flotante">
               <div className="menu-opcion">

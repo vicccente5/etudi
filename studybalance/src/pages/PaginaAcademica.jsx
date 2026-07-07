@@ -4,7 +4,10 @@ import ListaTareas from '../components/Academico/ListaTareas';
 import Calendario from '../components/Academico/Calendario';
 import Temporizador from '../components/Academico/Temporizador';
 
-const PaginaAcademica = ({ tareas, agregarTarea, editarTarea, toggleCompletada, eliminarTarea }) => {
+const PaginaAcademica = ({ 
+  tareas, agregarTarea, editarTarea, toggleCompletada, eliminarTarea,
+  timerModo, timerTiempo, timerActivo, toggleTimer, reiniciarTimer, cambiarModoTimer
+}) => {
   const [tareaEnEdicion, setTareaEnEdicion] = useState(null);
 
   const totalTareas = tareas.length;
@@ -27,17 +30,24 @@ const PaginaAcademica = ({ tareas, agregarTarea, editarTarea, toggleCompletada, 
       </header>
 
       <div className="grid-academico">
-        <aside className="columna-lateral">
+        <section className="columna-principal">
           <FormularioTarea 
             onAgregarTarea={agregarTarea}
             onEditarTarea={editarTarea}
             tareaEnEdicion={tareaEnEdicion}
             onCancelarEdicion={() => setTareaEnEdicion(null)}
           />
-          <Temporizador />
-        </aside>
+          <Temporizador 
+            modo={timerModo}
+            tiempo={timerTiempo}
+            activo={timerActivo}
+            toggle={toggleTimer}
+            reiniciar={reiniciarTimer}
+            cambiarModo={cambiarModoTimer}
+          />
+        </section>
         
-        <section className="columna-principal">
+        <aside className="columna-lateral">
           <ListaTareas 
             tareas={tareas}
             onToggle={toggleCompletada}
@@ -45,7 +55,7 @@ const PaginaAcademica = ({ tareas, agregarTarea, editarTarea, toggleCompletada, 
             onEditar={(tarea) => setTareaEnEdicion(tarea)}
           />
           <Calendario tareas={tareas} />
-        </section>
+        </aside>
       </div>
     </div>
   );

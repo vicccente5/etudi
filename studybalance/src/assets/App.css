@@ -387,3 +387,80 @@ textarea { width: 100%; padding: var(--spacing-sm); border: 1px solid var(--colo
 .menu-opcion select:hover {
   border-color: var(--color-primary);
 }
+
+/* Override: Layout Académico (Formulario grande, Lista pequeña) */
+@media (min-width: 768px) {
+  .grid-academico {
+    grid-template-columns: 1fr 320px !important;
+  }
+}
+
+/* Nuevo Layout Bienestar */
+.layout-bienestar-centrado {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.bienestar-principal-ancho {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.bienestar-recursos-inferior {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-lg);
+  margin-top: var(--spacing-lg);
+  padding-top: var(--spacing-lg);
+  border-top: 1px solid var(--color-border);
+}
+
+@media (min-width: 768px) {
+  .bienestar-recursos-inferior {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* --- Mini Temporizador Navbar --- */
+.mini-temporizador {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: var(--color-background);
+  padding: 4px 12px;
+  border-radius: 20px;
+  border: 1px solid var(--color-border);
+  font-family: monospace;
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin-right: var(--spacing-sm);
+}
+
+.mini-temporizador.modo-trabajo {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.mini-temporizador.modo-descanso {
+  border-color: var(--color-secondary);
+  color: var(--color-secondary);
+}
+
+.btn-mini-play {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  padding: 0;
+  transition: transform 0.2s;
+}
+
+.btn-mini-play:hover {
+  transform: scale(1.15);
+}
