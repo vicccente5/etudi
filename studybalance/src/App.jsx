@@ -5,7 +5,8 @@
 import { useState, useEffect, useCallback } from 'react'
 
 // Importamos componentes de react-router-dom para habilitar el sistema de navegación entre diferentes vistas
-import { Routes, Route } from 'react-router-dom'
+// Agregamos useNavigate para poder redirigir al usuario automáticamente usando código (programáticamente)
+import { Routes, Route, useNavigate } from 'react-router-dom'
 
 // Importamos los componentes compartidos (la barra de navegación superior y el pie de página)
 import Navbar from './components/UI/Navbar'
@@ -14,8 +15,12 @@ import Footer from './components/UI/Footer'
 // Importamos las dos pantallas (páginas) principales de nuestra aplicación
 import PaginaAcademica from './pages/PaginaAcademica'
 import PaginaBienestar from './pages/PaginaBienestar'
+// Importamos la nueva vista del Juego (esqueleto)
+import Juego from './pages/Juego'
 
 function App() {
+  // Obtenemos la función navigate que nos permite cambiar la ruta actual del navegador
+  const navigate = useNavigate();
   // --- INICIALIZACIÓN DE ESTADOS ---
   
   // 1. Estado para almacenar la lista principal de Tareas.
@@ -103,11 +108,36 @@ function App() {
   }, [])
 
 
+  // --- CONFIGURACIÓN DEL TEMPORIZADOR ---
+  // Guardamos las preferencias del usuario en LocalStorage (por defecto 25 y 5)
+  const [configTrabajo, setConfigTrabajo] = useState(() => {
+    const guardado = localStorage.getItem('studybalance_config_trabajo');
+    return guardado ? Number(guardado) : 25;
+  });
+
+  const [configDescanso, setConfigDescanso] = useState(() => {
+    const guardado = localStorage.getItem('studybalance_config_descanso');
+    return guardado ? Number(guardado) : 5;
+  });
+
+  // Sincronizamos con LocalStorage al cambiar
+  useEffect(() => {
+    localStorage.setItem('studybalance_config_trabajo', configTrabajo);
+  }, [configTrabajo]);
+
+  useEffect(() => {
+    localStorage.setItem('studybalance_config_descanso', configDescanso);
+  }, [configDescanso]);
+
   // --- ESTADOS Y LÓGICA DEL TEMPORIZADOR GLOBAL ---
   // Al mover esto a App.jsx, el temporizador sobrevive aunque cambiemos de página.
   const [timerModo, setTimerModo] = useState('trabajo')
-  const [timerTiempo, setTimerTiempo] = useState(25 * 60)
+  // Inicializamos el tiempo basado en la configuración actual
+  const [timerTiempo, setTimerTiempo] = useState(configTrabajo * 60)
   const [timerActivo, setTimerActivo] = useState(false)
+  
+  // Estado que controla si el botón del juego aparece en el Navbar o no
+  const [juegoDesbloqueado, setJuegoDesbloqueado] = useState(false)
 
   useEffect(() => {
     let intervalo = null;
@@ -120,29 +150,46 @@ function App() {
       audio.play().catch(() => { });
 
       if (timerModo === 'trabajo') {
+        // Al terminar el tiempo de trabajo, desbloqueamos el juego como recompensa
+        setJuegoDesbloqueado(true);
         setTimerModo('descanso');
-        setTimerTiempo(5 * 60);
+        // Usamos la configuración de descanso personalizada
+        setTimerTiempo(configDescanso * 60);
       } else {
+        // Al terminar el descanso, bloqueamos el juego de nuevo
+        setJuegoDesbloqueado(false);
         setTimerModo('trabajo');
-        setTimerTiempo(25 * 60);
+        // Usamos la configuración de trabajo personalizada
+        setTimerTiempo(configTrabajo * 60);
+        // Expulsamos automáticamente al usuario a la ruta principal
+        navigate('/');
       }
       setTimerActivo(false);
     }
     return () => clearInterval(intervalo);
-  }, [timerActivo, timerTiempo, timerModo]);
+  // Agregamos las configuraciones a las dependencias por buenas prácticas de React
+  }, [timerActivo, timerTiempo, timerModo, navigate, configTrabajo, configDescanso]);
 
   const toggleTimer = useCallback(() => setTimerActivo(prev => !prev), []);
   
   const reiniciarTimer = useCallback(() => {
     setTimerActivo(false);
-    setTimerTiempo(timerModo === 'trabajo' ? 25 * 60 : 5 * 60);
-  }, [timerModo]);
+    setTimerTiempo(timerModo === 'trabajo' ? configTrabajo * 60 : configDescanso * 60);
+  }, [timerModo, configTrabajo, configDescanso]);
 
   const cambiarModoTimer = useCallback((nuevoModo) => {
     setTimerActivo(false);
     setTimerModo(nuevoModo);
-    setTimerTiempo(nuevoModo === 'trabajo' ? 25 * 60 : 5 * 60);
-  }, []);
+    setTimerTiempo(nuevoModo === 'trabajo' ? configTrabajo * 60 : configDescanso * 60);
+  }, [configTrabajo, configDescanso]);
+
+  // Función para que el usuario guarde su configuración y se actualice el reloj inmediatamente
+  const actualizarConfiguracionTimer = useCallback((nuevoTrabajo, nuevoDescanso) => {
+    setConfigTrabajo(nuevoTrabajo);
+    setConfigDescanso(nuevoDescanso);
+    setTimerActivo(false);
+    setTimerTiempo(timerModo === 'trabajo' ? nuevoTrabajo * 60 : nuevoDescanso * 60);
+  }, [timerModo]);
 
 
   // --- RENDERIZADO VISUAL DE LA INTERFAZ PRINCIPAL ---
@@ -154,6 +201,7 @@ function App() {
         timerTiempo={timerTiempo}
         timerActivo={timerActivo}
         toggleTimer={toggleTimer}
+        juegoDesbloqueado={juegoDesbloqueado}
       />
       
       {/* main-content es el contenedor dinámico donde se inyectan y alternan las diferentes páginas según el clic del usuario */}
@@ -177,6 +225,9 @@ function App() {
               toggleTimer={toggleTimer}
               reiniciarTimer={reiniciarTimer}
               cambiarModoTimer={cambiarModoTimer}
+              configTrabajo={configTrabajo}
+              configDescanso={configDescanso}
+              actualizarConfiguracionTimer={actualizarConfiguracionTimer}
             />
           } />
           
@@ -189,6 +240,9 @@ function App() {
               eliminarRegistroAnimo={eliminarRegistroAnimo}
             />
           } />
+
+          {/* Ruta "/juego": Muestra el esqueleto del juego. El acceso a este enlace es manejado condicionalmente por el Navbar */}
+          <Route path="/juego" element={<Juego />} />
           
         </Routes>
       </main>

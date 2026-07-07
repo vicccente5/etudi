@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 
-const Navbar = ({ timerModo, timerTiempo, timerActivo, toggleTimer }) => {
+const Navbar = ({ timerModo, timerTiempo, timerActivo, toggleTimer, juegoDesbloqueado }) => {
   // LÓGICA DE ESTADOS
   const [menuAbierto, setMenuAbierto] = useState(false);
 
@@ -51,6 +51,16 @@ const Navbar = ({ timerModo, timerTiempo, timerActivo, toggleTimer }) => {
             Bienestar
           </NavLink>
         </li>
+
+        {/* --- ENLACE AL JUEGO (Secreto) --- */}
+        {/* Solo se renderiza si el estado juegoDesbloqueado es verdadero (es decir, si terminaste de estudiar) */}
+        {juegoDesbloqueado && (
+          <li>
+            <NavLink to="/juego" className={({ isActive }) => isActive ? 'nav-link activo' : 'nav-link'} style={{ color: 'var(--color-accent)', fontWeight: 'bold' }}>
+              🎮 Juego
+            </NavLink>
+          </li>
+        )}
 
         {/* --- MINI TEMPORIZADOR --- */}
         <li className={`mini-temporizador ${timerModo === 'trabajo' ? 'modo-trabajo' : 'modo-descanso'}`}>

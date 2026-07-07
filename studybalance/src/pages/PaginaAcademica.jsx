@@ -6,7 +6,8 @@ import Temporizador from '../components/Academico/Temporizador';
 
 const PaginaAcademica = ({ 
   tareas, agregarTarea, editarTarea, toggleCompletada, eliminarTarea,
-  timerModo, timerTiempo, timerActivo, toggleTimer, reiniciarTimer, cambiarModoTimer
+  timerModo, timerTiempo, timerActivo, toggleTimer, reiniciarTimer, cambiarModoTimer,
+  configTrabajo, configDescanso, actualizarConfiguracionTimer
 }) => {
   const [tareaEnEdicion, setTareaEnEdicion] = useState(null);
 
@@ -44,6 +45,9 @@ const PaginaAcademica = ({
             toggle={toggleTimer}
             reiniciar={reiniciarTimer}
             cambiarModo={cambiarModoTimer}
+            configTrabajo={configTrabajo}
+            configDescanso={configDescanso}
+            actualizarConfiguracion={actualizarConfiguracionTimer}
           />
         </section>
         
