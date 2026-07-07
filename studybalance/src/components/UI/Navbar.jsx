@@ -68,8 +68,8 @@ const Navbar = ({ timerModo, timerTiempo, timerActivo, toggleTimer, juegoDesbloq
         {/* --- MINI TEMPORIZADOR --- */}
         <li className={`mini-temporizador ${timerModo === 'trabajo' ? 'modo-trabajo' : 'modo-descanso'}`}>
           <span className="mini-tiempo">{minutos}:{segundos}</span>
-          <button 
-            className="btn-mini-play" 
+          <button
+            className="btn-mini-play"
             onClick={toggleTimer}
             title={timerActivo ? 'Pausar' : 'Iniciar'}
           >
@@ -79,15 +79,15 @@ const Navbar = ({ timerModo, timerTiempo, timerActivo, toggleTimer, juegoDesbloq
 
         {/* --- MENÚ DE CONFIGURACIÓN --- */}
         <li className="configuracion-container">
-          <button 
-            className="btn-configuracion" 
+          <button
+            className="btn-configuracion"
             onClick={toggleMenu}
             aria-label="Configuración"
             title="Configuración"
           >
             ⚙️
           </button>
-          
+
           {menuAbierto && (
             <div className="menu-flotante">
               <div className="menu-opcion">
@@ -95,14 +95,6 @@ const Navbar = ({ timerModo, timerTiempo, timerActivo, toggleTimer, juegoDesbloq
                 <select value={tema} onChange={(e) => setTema(e.target.value)}>
                   <option value="light">☀️ Claro</option>
                   <option value="dark">🌙 Oscuro</option>
-                </select>
-              </div>
-              
-              <div className="menu-opcion">
-                <label>Idioma</label>
-                <select value={idioma} onChange={(e) => setIdioma(e.target.value)}>
-                  <option value="es">🇪🇸 Español</option>
-                  <option value="en">🇺🇸 English</option>
                 </select>
               </div>
             </div>
