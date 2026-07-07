@@ -1,3 +1,4 @@
+// Arreglo estático con ejercicios de relajación rápidos
 const ejercicios = [
   {
     titulo: 'Respiración 4-7-8',
@@ -16,11 +17,13 @@ const ejercicios = [
   }
 ];
 
+// EjerciciosRelajacion es un componente estático que muestra tarjetas informativas
 const EjerciciosRelajacion = () => {
   return (
     <div className="ejercicios-relajacion card">
       <h3>Ejercicios Rápidos</h3>
       <div className="ejercicios-grid">
+        {/* Mapeamos cada ejercicio para crear una tarjeta visual con su emoji, título y descripción */}
         {ejercicios.map((ej, idx) => (
           <div key={idx} className="ejercicio-card">
             <div className="ejercicio-icon">{ej.emoji}</div>

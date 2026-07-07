@@ -8,6 +8,8 @@ const opcionesAnimo = [
   { valor: 'ansioso', emoji: '😰', label: 'Ansioso' }
 ];
 
+// RegistroAnimo es el formulario interactivo de la sección de Bienestar.
+// Permite al usuario seleccionar un estado de ánimo con botones, un nivel de energía (1-5) con un slider, y añadir notas.
 const RegistroAnimo = ({ onAgregarRegistro }) => {
   const estadoInicial = { animo: '', energia: 3, nota: '' };
   const [campos, setCampos] = useState(estadoInicial);

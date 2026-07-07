@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 
+// Navbar es la barra de navegación superior principal. 
+// Gestiona el menú de configuración (tema oscuro, idioma) y muestra el mini temporizador en todo momento.
+// También maneja la lógica de ruteo visual entre Académico, Bienestar y el Juego (cuando está desbloqueado).
 const Navbar = ({ timerModo, timerTiempo, timerActivo, toggleTimer, juegoDesbloqueado }) => {
   // LÓGICA DE ESTADOS
   const [menuAbierto, setMenuAbierto] = useState(false);

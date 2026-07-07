@@ -1,3 +1,5 @@
+// Este arreglo contiene los artículos de salud mental que le mostramos al usuario.
+// En un sistema real, esto podría venir de una base de datos o una API externa.
 const recursos = [
   {
     titulo: 'La importancia de las pausas',
@@ -16,11 +18,14 @@ const recursos = [
   }
 ];
 
+// ContenidoSaludMental es un componente puramente visual (presentacional).
+// No maneja estados ni lógica compleja, solo renderiza la lista de recursos.
 const ContenidoSaludMental = () => {
   return (
     <div className="salud-mental card">
       <h3>Consejos de Bienestar</h3>
       <ul className="recursos-lista">
+        {/* Recorremos el arreglo de recursos y generamos un elemento de lista (li) para cada uno */}
         {recursos.map((rec, idx) => (
           <li key={idx} className="recurso-item">
             <h4>{rec.titulo}</h4>

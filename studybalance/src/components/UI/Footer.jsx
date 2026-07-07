@@ -1,3 +1,4 @@
+// Footer es un componente presentacional simple que se muestra al final de todas las páginas
 const Footer = () => {
   return (
     <footer className="footer">

@@ -506,3 +506,97 @@ textarea { width: 100%; padding: var(--spacing-sm); border: 1px solid var(--colo
   padding: 4px 8px;
   font-size: 0.8rem;
 }
+
+/* --- ESTILOS DEL JUEGO MEMORICE --- */
+.juego-container {
+  max-width: 600px;
+  margin: 2rem auto;
+  text-align: center;
+  background-color: var(--color-surface);
+  padding: 2rem;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--color-border);
+}
+
+.juego-container h2 {
+  color: var(--color-accent);
+  margin-bottom: 0.5rem;
+}
+
+.grilla-cartas {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+  margin: 2rem 0;
+  /* La perspectiva es obligatoria en el contenedor padre para dar efecto de profundidad 3D al girar */
+  perspective: 1000px; 
+}
+
+/* Contenedor base de cada carta (fijo) */
+.carta {
+  aspect-ratio: 1 / 1;
+  background-color: transparent;
+  cursor: pointer;
+  border-radius: var(--radius-md);
+}
+
+/* Contenedor interno que es el que realmente rota */
+.carta-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.6s cubic-bezier(0.4, 0.0, 0.2, 1);
+  transform-style: preserve-3d; /* Permite que los hijos mantengan el espacio 3D */
+}
+
+/* La magia ocurre aquí: cuando agregamos 'flipped', rotamos en el eje Y */
+.carta.flipped .carta-inner {
+  transform: rotateY(180deg);
+}
+
+/* Estilos comunes para la cara frontal y trasera */
+.carta-front, .carta-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden; /* Oculta la cara cuando está dada vuelta */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  border: 2px solid var(--color-border);
+  user-select: none;
+}
+
+/* La cara trasera (la que tiene el signo de interrogación) */
+.carta-back {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  color: white;
+}
+
+/* La cara delantera (la que tiene el emoji) */
+.carta-front {
+  background-color: var(--color-background);
+  /* Esta cara nace dada vuelta, para que al rotar el contenedor quede mirando al frente */
+  transform: rotateY(180deg); 
+}
+
+.btn-reiniciar-juego {
+  margin-top: 1rem;
+  font-size: 1rem;
+  padding: 0.6rem 1.5rem;
+}
+
+/* Responsive para celulares */
+@media (max-width: 500px) {
+  .grilla-cartas {
+    gap: 8px;
+  }
+  .carta-front, .carta-back {
+    font-size: 1.8rem;
+  }
+}
