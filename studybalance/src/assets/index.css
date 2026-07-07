@@ -60,3 +60,13 @@ button {
   border: none;
   background: none;
 }
+
+/* Variables para Modo Oscuro */
+:root.dark-mode {
+  --color-background: #111827; /* Gray 900 */
+  --color-surface: #1F2937; /* Gray 800 */
+  --color-text: #F9FAFB; /* Gray 50 */
+  --color-text-light: #9CA3AF; /* Gray 400 */
+  --color-border: #374151; /* Gray 700 */
+  --color-primary: #818cf8; /* Indigo 400 */
+}
