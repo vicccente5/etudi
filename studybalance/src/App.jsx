@@ -22,7 +22,7 @@ function App() {
   // Obtenemos la función navigate que nos permite cambiar la ruta actual del navegador
   const navigate = useNavigate();
   // --- INICIALIZACIÓN DE ESTADOS ---
-  
+
   // 1. Estado para almacenar la lista principal de Tareas.
   // Usamos una técnica llamada "inicialización perezosa" pasándole una función a useState en lugar de un valor directo.
   // Esto hace que React solo lea el LocalStorage la primera vez que carga la app, haciendo que el inicio sea mucho más rápido.
@@ -135,7 +135,7 @@ function App() {
   // Inicializamos el tiempo basado en la configuración actual
   const [timerTiempo, setTimerTiempo] = useState(configTrabajo * 60)
   const [timerActivo, setTimerActivo] = useState(false)
-  
+
   // Estado que controla si el botón del juego aparece en el Navbar o no
   const [juegoDesbloqueado, setJuegoDesbloqueado] = useState(false)
 
@@ -167,11 +167,11 @@ function App() {
       setTimerActivo(false);
     }
     return () => clearInterval(intervalo);
-  // Agregamos las configuraciones a las dependencias por buenas prácticas de React
+    // Agregamos las configuraciones a las dependencias por buenas prácticas de React
   }, [timerActivo, timerTiempo, timerModo, navigate, configTrabajo, configDescanso]);
 
   const toggleTimer = useCallback(() => setTimerActivo(prev => !prev), []);
-  
+
   const reiniciarTimer = useCallback(() => {
     setTimerActivo(false);
     setTimerTiempo(timerModo === 'trabajo' ? configTrabajo * 60 : configDescanso * 60);
@@ -196,24 +196,24 @@ function App() {
   return (
     <div className="app-container">
       {/* El componente Navbar siempre estará fijo visible en la parte superior, sin importar en qué sub-página estemos */}
-      <Navbar 
+      <Navbar
         timerModo={timerModo}
         timerTiempo={timerTiempo}
         timerActivo={timerActivo}
         toggleTimer={toggleTimer}
         juegoDesbloqueado={juegoDesbloqueado}
       />
-      
+
       {/* main-content es el contenedor dinámico donde se inyectan y alternan las diferentes páginas según el clic del usuario */}
       <main className="main-content">
-        
+
         {/* El componente Routes es el motor inteligente que lee la URL actual en el navegador y decide qué <Route> habilitar */}
         <Routes>
-          
+
           {/* Ruta Raíz ("/"): Muestra la PaginaAcademica. Aquí le "inyectamos" o "pasamos" a través de props (propiedades) 
               toda la lista de tareas y las funciones CRUD para que pueda manipular la base de datos central. */}
           <Route path="/" element={
-            <PaginaAcademica 
+            <PaginaAcademica
               tareas={tareas}
               agregarTarea={agregarTarea}
               editarTarea={editarTarea}
@@ -230,11 +230,11 @@ function App() {
               actualizarConfiguracionTimer={actualizarConfiguracionTimer}
             />
           } />
-          
+
           {/* Ruta "/bienestar": Muestra la PaginaBienestar. Igual que arriba, le compartimos únicamente 
               los registros y funciones que necesita, manteniendo el código seguro y aislado. */}
           <Route path="/bienestar" element={
-            <PaginaBienestar 
+            <PaginaBienestar
               registrosAnimo={registrosAnimo}
               agregarRegistroAnimo={agregarRegistroAnimo}
               eliminarRegistroAnimo={eliminarRegistroAnimo}
@@ -243,10 +243,10 @@ function App() {
 
           {/* Ruta "/juego": Muestra el esqueleto del juego. El acceso a este enlace es manejado condicionalmente por el Navbar */}
           <Route path="/juego" element={<Juego />} />
-          
+
         </Routes>
       </main>
-      
+
       {/* El Footer siempre estará estático y visible en el fondo absoluto de la página */}
       <Footer />
     </div>

@@ -4,6 +4,7 @@ import FormularioTarea from '../components/Academico/FormularioTarea';
 import ListaTareas from '../components/Academico/ListaTareas';
 import Calendario from '../components/Academico/Calendario';
 import Temporizador from '../components/Academico/Temporizador';
+import WidgetClima from '../components/Academico/WidgetClima';
 
 // PaginaAcademica actúa como el contenedor o "Layout" principal de la sección de estudios.
 // Recibe como props las funciones y estados globales desde App.jsx
@@ -26,14 +27,17 @@ const PaginaAcademica = ({
 
   return (
     <div className="pagina-academica">
-      <header className="page-header">
-        <h1>Dashboard Académico</h1>
-        <div className="estadisticas-rapidas">
-          <span className="badge stat">Totales: {totalTareas}</span>
-          <span className="badge stat completadas">Completadas: {completadas}</span>
-          <span className="badge stat pendientes">Pendientes: {pendientes}</span>
-          {proxima && <span className="badge stat urgente">Próxima: {proxima.nombre} ({proxima.fecha})</span>}
+      <header className="page-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '20px' }}>
+        <div>
+          <h1>Dashboard Académico</h1>
+          <div className="estadisticas-rapidas">
+            <span className="badge stat">Totales: {totalTareas}</span>
+            <span className="badge stat completadas">Completadas: {completadas}</span>
+            <span className="badge stat pendientes">Pendientes: {pendientes}</span>
+            {proxima && <span className="badge stat urgente">Próxima: {proxima.nombre} ({proxima.fecha})</span>}
+          </div>
         </div>
+        <WidgetClima />
       </header>
 
       <div className="grid-academico">

@@ -102,7 +102,23 @@ Al inicializar los estados en `App.jsx` (por ejemplo, las tareas), le pasamos un
 
 ---
 
-## 7. Análisis de Líneas de Código Clave 🔍
+## 7. Integración de API Externa (El Clima) ⛅
+Una de las funcionalidades más interesantes del proyecto es cómo nos comunicamos con el mundo exterior utilizando una **API** (Interfaz de Programación de Aplicaciones). 
+
+### ¿Qué es Open-Meteo?
+En nuestro archivo `WidgetClima.jsx`, utilizamos la API gratuita **Open-Meteo**. Esta es una herramienta de código abierto que recopila información de las grandes agencias meteorológicas del mundo. La elegimos porque, a diferencia de otras, **no requiere registrarse ni utilizar una clave secreta (API Key)**. Es llegar y consultar.
+
+### ¿Cómo funciona el código paso a paso?
+1. **Ubicación (`navigator.geolocation`)**:
+   Antes de pedir el clima, usamos una función nativa que hace que tu navegador te pida permiso para conocer tu ubicación. Si aceptas, nos entrega tus coordenadas (Latitud y Longitud). Si rechazas, programamos un "Plan B" silencioso que carga el clima de Santiago de Chile por defecto.
+2. **Petición a la API (`fetch`)**:
+   Usamos la función `fetch()` de JavaScript para "llamar" a los servidores de Open-Meteo. Le pasamos tus coordenadas en la URL. La API responde inmediatamente entregándonos la temperatura y un código numérico del estado del tiempo.
+3. **Traducción del Código (`interpretarClima`)**:
+   La Organización Meteorológica Mundial usa números (ej. `0` es Despejado, `61` es Lluvia). Nuestra función `interpretarClima` lee ese número y, mediante condicionales `if`, lo convierte en el Emoji correcto, el texto en español, y la frase sugerida para que el usuario sepa qué hacer en su descanso Pomodoro.
+
+---
+
+## 8. Análisis de Líneas de Código Clave 🔍
 Para entender mejor la aplicación, aquí tienes un desglose de las piezas de código más importantes y complejas del proyecto:
 
 ### A. La "Inicialización Perezosa" (Lazy Initialization) del Estado
@@ -158,7 +174,7 @@ Si cualquiera de estas condiciones se cumple, la función hace un `return` tempr
 
 ---
 
-## 8. Cuestionario de Estudio 📝
+## 9. Cuestionario de Estudio 📝
 ¡Pon a prueba lo que has aprendido! Intenta responder estas preguntas con tus propias palabras basándote en el código del proyecto. Te ayudará a afianzar los conceptos antes de cualquier evaluación.
 
 1. **Sobre Estados:** ¿Cuál es la diferencia entre declarar una variable normal con `let` (como `let contador = 0`) y declarar un estado con `useState` en React? ¿Qué pasa visualmente en la pantalla cuando modificas cada uno?
